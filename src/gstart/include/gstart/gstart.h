@@ -24,7 +24,7 @@ void translateLinearPoint(sf::Vector2f& point)
 
 float translateCircularPoint(sf::Vector2f& point, float nextStep = 0)
 {
-  constexpr float radius = 20.0;
+  constexpr float radius = 15.0;
   constexpr float angleFactor = (0.000001 / 360.0) * 3.1415;
 
   float radiusStep = 0.1 + nextStep;
