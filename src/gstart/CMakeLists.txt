@@ -4,11 +4,22 @@ add_library(gstart ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_sources(gstart
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include/gstart/ConsoleLog.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/gstart/gstart.h
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ConsoleLog.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ConsoleLog.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/gstart.cpp
+        )
 
 target_include_directories(gstart
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+target_link_libraries(gstart 
+    PUBLIC
+    config
+    shapes
+    SFML::Graphics
+    SFML::Window
+    )

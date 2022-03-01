@@ -1,22 +1,33 @@
 BasedOnStyle: Google
-AlignAfterOpenBracket: 'AlwaysBreak'
-AllowAllConstructorInitializersOnNextLine: 'false'
-AllowAllParametersOfDeclarationOnNextLine: 'false'
+Language: Cpp
+Standard: 'Latest'
+IndentWidth: 2
+
+ColumnLimit: 85
+
+AlignAfterOpenBracket: 'true'
 AlignConsecutiveMacros: 'true'
+AlignOperands: 'true'
+AccessModifierOffset: 0
+
+AllowAllParametersOfDeclarationOnNextLine: 'false'
+AllowAllConstructorInitializersOnNextLine: 'true'
+AllowShortIfStatementsOnASingleLine: 'Never'
 AllowShortCaseLabelsOnASingleLine: 'true'
 AllowShortFunctionsOnASingleLine: 'None'
-AllowShortIfStatementsOnASingleLine: 'Never'
 AllowShortLoopsOnASingleLine: 'false'
+
 BreakBeforeBraces: Allman
 BinPackArguments: 'false'
 BinPackParameters: 'false'
+
 Cpp11BracedListStyle: 'false'
-ColumnLimit: 125 
-NamespaceIndentation: All
+
+SpaceInEmptyBlock: 'true'
 SpaceAfterTemplateKeyword: 'false'
-SpaceBeforeCtorInitializerColon: 'true'
 SpaceBeforeInheritanceColon: 'true'
-SpaceBeforeParens: ControlStatements
+SpaceBeforeParens: 'ControlStatements'
+SpaceBeforeCtorInitializerColon: 'true'
 SpaceBeforeRangeBasedForLoopColon: 'true'
-SpaceInEmptyBlock: true
-Standard: 'Latest'
+
+NamespaceIndentation: 'All'
