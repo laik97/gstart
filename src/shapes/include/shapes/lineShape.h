@@ -3,8 +3,8 @@
 
 class LineShape : public ShapeFactory
 {
- public:
-  LineShape(const sf::VertexArray& points) : ShapeFactory(points){};
+  public:
+  LineShape(const sf::VertexArray& points);
 
   float area();
   float length();

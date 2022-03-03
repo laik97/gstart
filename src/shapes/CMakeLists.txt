@@ -1,13 +1,16 @@
 add_library(shapes ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+file(GLOB HEAD_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/shapes/*.h)
+file(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+
 target_sources(shapes
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/shapes/lineShape.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/shapes/workerShape.h
+        ${HEAD_FILES}
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/lineShape.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/workerShape.cpp
+        ${SRC_FILES}
         )
+
+
 
 target_include_directories(shapes
     PUBLIC

@@ -1,6 +1,7 @@
+#include "math.h"
 #include "shapes/lineShape.h"
 
-#include "math.h"
+LineShape::LineShape(const sf::VertexArray& points) : ShapeFactory(points){};
 
 float LineShape::area()
 {
@@ -16,8 +17,8 @@ float LineShape::length()
 
 sf::Vector2f LineShape::center()
 {
-  return sf::Vector2f(
-      this->points_[0].position.x + this->points_[1].position.x, this->points_[0].position.y + this->points_[1].position.y);
+  return sf::Vector2f(this->points_[0].position.x + this->points_[1].position.x,
+                      this->points_[0].position.y + this->points_[1].position.y);
 }
 
 void LineShape::linearTranslate(const sf::Vector2f& translVec)

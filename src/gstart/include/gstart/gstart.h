@@ -1,7 +1,6 @@
 #include "SFML/Graphics.hpp"
 #include "config/globalConfig.h"
 #include "config/windowConfig.h"
-
 class Gstart
 {
   public:

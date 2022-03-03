@@ -16,4 +16,5 @@ target_compile_options(gstartMain
     PRIVATE
     -std=c++1z
     -Wall
-    -Wextra)
+    -Wextra
+    -fpermissive)
