@@ -6,7 +6,7 @@
 #include "gstart/gstart.h"
 #include "shapes/workerShape.h"
 
-Gstart* Gstart::getInstance(const Resolution& resolution)
+Gstart* Gstart::getInstance(const Resolution<>& resolution)
 {
   static Gstart instance{ resolution };
   return &instance;
@@ -20,14 +20,6 @@ void Gstart::run()
 void Gstart::mainLoop()
 {
   auto res = globalConfig_.getResolution();
-  std::vector<WorkerShape> workers;
-  const auto a = res.resolutionVec<sf::Vector2f>();
-  workers.reserve(20);
-  for (int i = 0; i < 20; i++)
-  {
-    workers.emplace_back(WorkerShape{
-        globalConfig_.getWindowMiddlePoint().resolutionVec<sf::Vector2f>(), 0 });
-  }
 
   while (window_.isOpen())
   {
@@ -46,20 +38,12 @@ void Gstart::mainLoop()
 
       if (event.type == sf::Event::MouseMoved)
       {
-        for (auto& worker : workers)
-        {
-          worker.move(sf::Mouse::getPosition(window_));
-        }
       }
 
       if (event.type == sf::Event::Closed)
         window_.close();
     }
 
-    for (auto& worker : workers)
-    {
-      window_.draw(worker.getDrawable());
-    }
     window_.display();
     window_.clear();
     window_.setFramerateLimit(120);

@@ -9,8 +9,7 @@ target_link_libraries(gstartMain
     gstart)
 
 target_compile_features(gstartMain PRIVATE
-    cxx_constexpr
-    cxx_variadic_templates)
+    cxx_constexpr)
 
 target_compile_options(gstartMain 
     PRIVATE

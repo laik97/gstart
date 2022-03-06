@@ -7,9 +7,9 @@ class GlobalConfig : public WindowConfig
 {
   public:
   GlobalConfig(){};
-  GlobalConfig(const Resolution& resolution) : WindowConfig(resolution){};
+  GlobalConfig(const Resolution<>& resolution) : WindowConfig(resolution){};
 
-  const Resolution& getWindowResolution()
+  const Resolution<>& getWindowResolution()
   {
     return getResolution();
   }

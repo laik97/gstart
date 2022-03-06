@@ -3,31 +3,23 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-template<typename InternalType = int>
+template<typename InternalType = uint>
 struct Resolution
 {
-  InternalType width;
-  InternalType height;
+  InternalType width_;
+  InternalType height_;
 
-  // template<typename T>
-  // void resolutionVec();
-
-  template<>
-  std::vector<InternalType> resolutionVec<std::vector<InternalType>>()
+  template<typename T = Resolution>
+  auto resolutionVec()
   {
-    return std::vector{ width, height };
-  }
-
-  template<>
-  std::array<InternalType, 2> resolutionVec<std::array<InternalType, 2>>()
-  {
-    return std::array<InternalType, 2>{ width, height };
-  }
-
-  template<>
-  sf::Vector2f resolutionVec<sf::Vector2f>()
-  {
-    return sf::Vector2f{ width, height };
+    if constexpr (std::is_same<T, std::vector<InternalType>>::value)
+      return std::vector<InternalType>{ width_, height_ };
+    else if constexpr (std::is_same<T, std::array<InternalType, 2>>::value)
+      return std::array<InternalType, 2>{ width_, height_ };
+    else if constexpr (std::is_same<T, sf::Vector2f>::value)
+      return sf::Vector2f{ static_cast<float>(height_), static_cast<float>(width_) };
+    else
+      return Resolution{ width_, height_ };
   }
 };
 
@@ -57,7 +49,7 @@ class WindowConfig
 
   Resolution<> getWindowMiddlePoint()
   {
-    return Resolution<>{ resolution_.width / 2, resolution_.height / 2 };
+    return Resolution<>{ resolution_.width_ / 2, resolution_.height_ / 2 };
   }
 
   private:
