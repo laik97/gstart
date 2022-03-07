@@ -12,3 +12,8 @@ target_include_directories(config
         ${CMAKE_CURRENT_SOURCE_DIR}/include
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+
+target_compile_options(config
+    PRIVATE
+    -std=c++2a)
