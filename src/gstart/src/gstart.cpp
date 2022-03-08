@@ -19,7 +19,8 @@ void Gstart::run()
 
 void Gstart::mainLoop()
 {
-  auto res = globalConfig_.getResolution();
+  WorkerShape worker(
+      globalConfig_.getResolution().resolutionMiddle<sf::Vector2f, float>(), 0.0f);
 
   while (window_.isOpen())
   {
@@ -28,16 +29,14 @@ void Gstart::mainLoop()
     {
       if (event.type == sf::Event::KeyPressed)
       {
+        Directions directions;
+
         switch (event.key.code)
         {
           case sf::Keyboard::Escape: window_.close(); break;
-          case sf::Keyboard::Left: break;
+          case sf::Keyboard::Left:; break;
           default: break;
         }
-      }
-
-      if (event.type == sf::Event::MouseMoved)
-      {
       }
 
       if (event.type == sf::Event::Closed)

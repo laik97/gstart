@@ -34,22 +34,33 @@ void WorkerShape::setInitialPosition()
 
 void WorkerShape::translate(const sf::Vector2f& moveVector)
 {
-  for (const auto& point : shape_.getAsVector())
+  Eigen::Translation<float, 2> translationVec(0.001, 0.0);
+  Eigen::Rotation2D currentOrientation(orientation_);
+  const auto directedTranslationVec =
+      translationVec * currentOrientation.toRotationMatrix();
+
+  for (auto& base : shape_.getAsVector())
   {
-    point->position.x = point->position.x + moveVector.x;
-    point->position.y = point->position.y + moveVector.y;
+    Eigen::Vector2f point(base->position.x, base->position.y);
+    const auto newPos = directedTranslationVec * point;
+    base->position.x = newPos(0);
+    base->position.y = newPos(1);
   }
 }
 
 void WorkerShape::rotate(const float orientation)
 {
+  orientation_ += orientation;
   Transformation::transform<Transformations::degrees, Transformations::radians>(
       &orientation);
   Eigen::Rotation2D rotation(orientation);
-}
-
-void WorkerShape::move(const double distance)
-{
+  for (auto& base : shape_.getAsVector())
+  {
+    Eigen::Vector2f point(base->position.x, base->position.y);
+    const auto newPoint = rotation.toRotationMatrix() * point;
+    base->position.x = newPoint(0);
+    base->position.y = newPoint(1);
+  }
 }
 
 void WorkerShape::move(const sf::Vector2i& dstPoint)
@@ -69,8 +80,15 @@ void WorkerShape::move(const sf::Vector2f& dstPoint)
 void WorkerShape::move(const Directions& dir)
 {
   // rotate
-
+  if (dir.left)
+    rotate(1.0f);
+  if (dir.right)
+    rotate(-1.0f);
   // translate
+  if (dir.forward)
+    move(sf::Vector2f(1.0, 0.0));
+  if (dir.backward)
+    move(sf::Vector2f(-1.0, 0.0));
 }
 
 sf::VertexArray WorkerShape::getDrawable()

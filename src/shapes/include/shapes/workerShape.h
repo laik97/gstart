@@ -7,6 +7,26 @@ struct Directions
   int backward : 1;
   int left : 1;
   int right : 1;
+
+  void left()
+  {
+    *this |= 0b0010;
+  }
+  void right()
+  {
+    right = 0b1;
+  }
+  void forward()
+  {
+    forward = 0b1;
+  }
+  void backward()
+  {
+    backward = 0b1;
+  }
+  void clear()
+  {
+  }
 };
 
 struct WorkerBaseShape
@@ -70,7 +90,6 @@ class WorkerShape
 
   void move(const sf::Vector2i& dstPoint);
   void move(const sf::Vector2f& dstPoint);
-  void move(const double distance);
   void move(const Directions& dir);
 
   sf::VertexArray getDrawable();

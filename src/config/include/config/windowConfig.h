@@ -9,17 +9,16 @@ struct Resolution
   InternalType width_;
   InternalType height_;
 
-  template<typename T = Resolution>
-  auto resolutionVec()
+  template<typename T = Resolution, typename CastType = InternalType>
+  const auto resolutionVec()
   {
-    if constexpr (std::is_same<T, std::vector<InternalType>>::value)
-      return std::vector<InternalType>{ width_, height_ };
-    else if constexpr (std::is_same<T, std::array<InternalType, 2>>::value)
-      return std::array<InternalType, 2>{ width_, height_ };
-    else if constexpr (std::is_same<T, sf::Vector2f>::value)
-      return sf::Vector2f{ static_cast<float>(height_), static_cast<float>(width_) };
-    else
-      return Resolution{ width_, height_ };
+    return { static_cast<CastType>(width_), static_cast<CastType>(height_) };
+  }
+
+  template<typename T = Resolution, typename CastType = InternalType>
+  const auto resolutionMiddle()
+  {
+    return { static_cast<CastType>(width_ / 2), static_cast<CastType>(height_ / 2) };
   }
 };
 
@@ -42,14 +41,9 @@ class WindowConfig
     return false;
   }
 
-  const Resolution<>& getResolution()
+  Resolution<>& getResolution()
   {
     return resolution_;
-  }
-
-  Resolution<> getWindowMiddlePoint()
-  {
-    return Resolution<>{ resolution_.width_ / 2, resolution_.height_ / 2 };
   }
 
   private:
