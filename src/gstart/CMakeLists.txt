@@ -1,13 +1,14 @@
 # COMMON SETUP OF CMAKE FOR INTERNAL LIBS
 add_library(gstart ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+file(GLOB HEAD_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/config/*.h)
+file(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+
 target_sources(gstart
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/gstart/ConsoleLog.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/gstart/gstart.h
+        ${HEAD_FILES}
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ConsoleLog.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/gstart.cpp
+        ${SRC_FILES}
         )
 
 target_include_directories(gstart

@@ -6,7 +6,7 @@
 #include "gstart/gstart.h"
 #include "shapes/workerShape.h"
 
-Gstart* Gstart::getInstance(const Resolution<>& resolution)
+Gstart* Gstart::getInstance(const Resolution<uint>& resolution)
 {
   static Gstart instance{ resolution };
   return &instance;
@@ -21,32 +21,53 @@ void Gstart::mainLoop()
 {
   const auto window = globalConfig_.window_;
   const auto resolution = window.resolution();
-
-  WorkerShape worker(resolution.getMiddle<sf::Vector2f, float>(), 0.0f);
+  runningWorkers_.push_back(
+      { WorkerShape{ resolution.getMiddle<sf::Vector2f, float>(), 0.0 },
+        Directions() });
 
   while (window_.isOpen())
   {
-    sf::Event event;
-    while (window_.pollEvent(event))
+    eventLoop();
+
+    for (auto& worker : runningWorkers_)
     {
-      if (event.type == sf::Event::KeyPressed)
-      {
-        Directions directions;
-
-        switch (event.key.code)
-        {
-          case sf::Keyboard::Escape: window_.close(); break;
-          case sf::Keyboard::Left: break;
-          default: break;
-        }
-      }
-
-      if (event.type == sf::Event::Closed)
-        window_.close();
+      worker.move();
+      worker.draw(window_);
     }
 
     window_.display();
     window_.clear();
     window_.setFramerateLimit(120);
+  }
+}
+
+inline void Gstart::eventLoop()
+{
+  sf::Event event;
+  Directions directions;
+
+  while (window_.pollEvent(event))
+  {
+    for (auto& worker : runningWorkers_)
+    {
+      if (event.type == sf::Event::KeyPressed)
+      {
+        worker.setDirections(event.key.code);
+      }
+
+      if (event.type == sf::Event::KeyReleased)
+      {
+        worker.resetDirections(event.key.code);
+      }
+    }
+
+    if (event.type == sf::Event::KeyPressed)
+    {
+      if (event.key.code == sf::Keyboard::Escape)
+        window_.close();
+    }
+
+    if (event.type == sf::Event::Closed)
+      window_.close();
   }
 }

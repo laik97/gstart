@@ -1,97 +1,81 @@
-#include <eigen3/Eigen/Geometry>
 
-#include "math.h"
 #include "shapes/transformations.h"
 #include "shapes/workerShape.h"
 
 WorkerShape::WorkerShape(const sf::Vector2f& startPosition,
                          const double startOrientation)
-    : color_(255, 191, 41), position_(startPosition), orientation_(startOrientation)
 {
   createShape();
-  setInitialPosition();
+  setInitialPosition(startPosition, startOrientation);
 }
 
 void WorkerShape::createShape()
 {
-  const sf::Vector2f frontCorner(8.0, 2.5);
-  const sf::Vector2f backUpCorner(0.0, 0.0);
-  const sf::Vector2f backDownCorner(0.0, 5.0);
-
-  shape_.front.position = frontCorner;
-  shape_.backUp.position = backUpCorner;
-  shape_.backDown.position = backDownCorner;
-
-  shape_.front.color = color_;
-  shape_.backUp.color = color_;
-  shape_.backDown.color = color_;
+  shape_.setPointCount(3);
+  shape_.setRotation(0);
+  shape_.setPoint(0, WorkerBaseShape::getFrontBasePoint());
+  shape_.setPoint(1, WorkerBaseShape::getBackUpBasePoint());
+  shape_.setPoint(2, WorkerBaseShape::getBackDownBasePoint());
+  shape_.setOrigin(WorkerBaseShape::getOrigin());
+  shape_.setFillColor(color_);
+  shape_.setOutlineColor(color_);
+  shape_.setOutlineThickness(2);
 }
 
-void WorkerShape::setInitialPosition()
+void WorkerShape::setInitialPosition(const sf::Vector2f& position,
+                                     const double orientation)
 {
-  translate(position_);
-}
-
-void WorkerShape::translate(const sf::Vector2f& moveVector)
-{
-  Eigen::Translation<float, 2> translationVec(0.001, 0.0);
-  Eigen::Rotation2D currentOrientation(orientation_);
-  const auto directedTranslationVec =
-      translationVec * currentOrientation.toRotationMatrix();
-
-  for (auto& base : shape_.getAsVector())
-  {
-    Eigen::Vector2f point(base->position.x, base->position.y);
-    const auto newPos = directedTranslationVec * point;
-    base->position.x = newPos(0);
-    base->position.y = newPos(1);
-  }
-}
-
-void WorkerShape::rotate(const float orientation)
-{
-  orientation_ += orientation;
-  Transformation::transform<Transformations::degrees, Transformations::radians>(
-      &orientation);
-  Eigen::Rotation2D rotation(orientation);
-  for (auto& base : shape_.getAsVector())
-  {
-    Eigen::Vector2f point(base->position.x, base->position.y);
-    const auto newPoint = rotation.toRotationMatrix() * point;
-    base->position.x = newPoint(0);
-    base->position.y = newPoint(1);
-  }
-}
-
-void WorkerShape::move(const sf::Vector2i& dstPoint)
-{
-  sf::Vector2f moveVec(dstPoint.x - position_.x, dstPoint.y - position_.y);
-  position_ = sf::Vector2f(dstPoint.x, dstPoint.y);
-  translate(moveVec);
-}
-
-void WorkerShape::move(const sf::Vector2f& dstPoint)
-{
-  sf::Vector2f moveVec(dstPoint.x - position_.x, dstPoint.y - position_.y);
-  position_ = dstPoint;
-  translate(moveVec);
+  shape_.setPosition(position);
+  shape_.setRotation(orientation);
 }
 
 void WorkerShape::move(const Directions& dir)
 {
-  // rotate
-  if (dir.left)
-    rotate(1.0f);
-  if (dir.right)
-    rotate(-1.0f);
-  // translate
-  if (dir.forward)
-    move(sf::Vector2f(1.0, 0.0));
-  if (dir.backward)
-    move(sf::Vector2f(-1.0, 0.0));
+  moveLeft(dir);
+  moveRight(dir);
+  moveForeward(dir);
+  // currently, backward movement is not needed
 }
 
-sf::VertexArray WorkerShape::getDrawable()
+void WorkerShape::moveLeft(const Directions& dir)
 {
-  return shape_.getAsVector();
+  if (dir.left_)
+    shape_.rotate(-2.0);
+}
+
+void WorkerShape::moveRight(const Directions& dir)
+{
+  if (dir.right_)
+    shape_.rotate(2.0);
+}
+
+void WorkerShape::moveForeward(const Directions& dir)
+{
+  sf::Vector2f moveVec(1.0, 0.0);
+  sf::Transform transform;
+  transform.rotate(shape_.getRotation());
+  const auto m = transform.transformPoint(moveVec);
+
+  if (dir.forward_)
+    shape_.move(m);
+  else
+    shape_.move(sf::Vector2f(0.0, 0.0));
+}
+
+void WorkerShape::moveBackward(const Directions& dir)
+{
+  sf::Vector2f moveVec(-1.0, 0.0);
+  sf::Transform transform;
+  transform.rotate(shape_.getRotation());
+  const auto m = transform.transformPoint(moveVec);
+
+  if (dir.backward_)
+    shape_.move(m);
+  else
+    shape_.move(sf::Vector2f(0.0, 0.0));
+}
+
+void WorkerShape::draw(sf::RenderWindow& window)
+{
+  window.draw(shape_);
 }

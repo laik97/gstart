@@ -14,7 +14,6 @@ set(CMAKE_CXX_CPPCHECK "cppcheck")
 printConfiguration()
 
 findSFML()
-findEigen()
 
 add_subdirectory(src)
 add_subdirectory(libs)
