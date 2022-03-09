@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <vector>
 
 template<typename InternalType = uint>
@@ -10,13 +9,13 @@ struct Resolution
   InternalType height_;
 
   template<typename T = Resolution, typename CastType = InternalType>
-  const auto resolutionVec()
+  auto get() const
   {
     return { static_cast<CastType>(width_), static_cast<CastType>(height_) };
   }
 
   template<typename T = Resolution, typename CastType = InternalType>
-  const auto resolutionMiddle()
+  auto getMiddle() const
   {
     return { static_cast<CastType>(width_ / 2), static_cast<CastType>(height_ / 2) };
   }
@@ -25,28 +24,16 @@ struct Resolution
 class WindowConfig
 {
   public:
-  WindowConfig() : resolution_(Resolution<>{ 800, 600 }), initialized_(false){};
-  WindowConfig(const Resolution<>& resolution)
-      : resolution_(resolution), initialized_(true){};
+  WindowConfig() : resolution_(Resolution<uint>{ 800, 600 }){};
 
-  bool setResolution(const Resolution<>& resolution)
-  {
-    if (initialized_ == false)
-    {
-      resolution_ = resolution;
-      initialized_ = true;
-      return true;
-    }
+  explicit WindowConfig(const Resolution<uint>& resolution)
+      : resolution_(resolution){};
 
-    return false;
-  }
-
-  Resolution<>& getResolution()
+  const Resolution<uint>& resolution() const
   {
     return resolution_;
   }
 
   private:
   Resolution<> resolution_{};
-  bool initialized_{ false };
 };

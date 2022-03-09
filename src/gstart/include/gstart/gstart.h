@@ -9,13 +9,13 @@ class Gstart
   Gstart(const Gstart&&) = delete;
   Gstart& operator=(const Gstart&) = delete;
 
-  static Gstart* getInstance(const Resolution<>& resolution);
+  static Gstart* getInstance(const Resolution<uint>& resolution);
 
   void run();
 
   private:
   ~Gstart(){};
-  Gstart(const Resolution<> resolution)
+  Gstart(const Resolution<uint> resolution)
       : globalConfig_(resolution),
         window_(sf::VideoMode(resolution.width_, resolution.height_), "GSTART"){};
 

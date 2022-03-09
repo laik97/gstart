@@ -93,5 +93,5 @@ void WorkerShape::move(const Directions& dir)
 
 sf::VertexArray WorkerShape::getDrawable()
 {
-  return shape_.getAsVertexArray();
+  return shape_.getAsVector();
 }

@@ -1,11 +1,12 @@
 #pragma once
 
-#include "SFML/Graphics.hpp"
 #include "windowConfig.h"
 
-class GlobalConfig : public WindowConfig
+class GlobalConfig
 {
   public:
   GlobalConfig(){};
-  GlobalConfig(const Resolution<>& resolution) : WindowConfig(resolution){};
+  GlobalConfig(const Resolution<uint>& resolution) : window_(resolution){};
+
+  WindowConfig window_;
 };

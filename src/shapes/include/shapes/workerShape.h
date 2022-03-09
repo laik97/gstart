@@ -1,4 +1,5 @@
 #pragma once
+
 #include "SFML/Graphics.hpp"
 
 struct Directions
@@ -10,7 +11,7 @@ struct Directions
 
   void left()
   {
-    *this |= 0b0010;
+    // *this |= 0b0010;
   }
   void right()
   {
@@ -53,15 +54,6 @@ struct WorkerBaseShape
     return std::vector<sf::Vertex*>{ &front, &backUp, &backDown };
   }
 
-  sf::VertexArray getAsVertexArray()
-  {
-    auto array = sf::VertexArray(sf::Triangles, 3);
-    array[0] = front;
-    array[1] = backUp;
-    array[2] = backDown;
-    return array;
-  }
-
   static constexpr std::array<std::array<float, 2>, 3> getBasePoints()
   {
     return { fronBasePoint, backUpBasePoint, backDownBasePoint };
@@ -92,7 +84,7 @@ class WorkerShape
   void move(const sf::Vector2f& dstPoint);
   void move(const Directions& dir);
 
-  sf::VertexArray getDrawable();
+  const sf::VertexArray& getDrawable();
 
   private:
   WorkerBaseShape shape_;
