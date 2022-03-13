@@ -26,3 +26,35 @@ function(findEigen)
 find_package(Eigen3 REQUIRED)
 message(STATUS "Eigen3 version: ${Eigen3_VERSION}")
 endfunction(findEigen)
+
+function(buildTests)
+enable_testing()
+file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/test/Test*)
+include(GoogleTest)
+foreach(test_file ${TEST_FILES})
+    get_filename_component(exe_dst_name ${test_file} NAME_WLE)
+    add_executable(${exe_dst_name} ${test_file})
+    target_include_directories(${exe_dst_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_link_libraries(${exe_dst_name} PUBLIC gtest_main shapes)
+    # target_sources(${exe_dst_name} PUBLIC ${SRC_FILES})
+    gtest_discover_tests(${exe_dst_name})
+endforeach()
+endfunction(buildTests)
+
+function(addLibs)
+file(GLOB libs RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/libs/*)
+foreach(lib ${libs})
+    add_subdirectory(${lib})
+endforeach()
+endfunction(addLibs)
+
+function(runCppCheck)
+find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
+if (CMAKE_CXX_CPPCHECK)
+list(
+    APPEND CMAKE_CXX_CPPCHECK 
+        "./src/"
+        "--verbose"
+)
+endif()
+endfunction(runCppCheck)
