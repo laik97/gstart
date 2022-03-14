@@ -81,8 +81,17 @@ class WorkerShape
   WorkerShape(const sf::Vector2f& startPosition, const double startOrientation);
 
   void draw(sf::RenderWindow& window);
-
   void move(const Directions& dir);
+
+  const sf::Vector2f& getCurrentPosition()
+  {
+    return shape_.getPosition();
+  }
+
+  float getCurrentOrientation()
+  {
+    return shape_.getRotation();
+  }
 
   private:
   sf::ConvexShape shape_{};
