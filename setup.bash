@@ -2,8 +2,7 @@
 
 PROJECT_DIR="$(pwd)"
 
-function rebuild()
-{
+function rebuild() {
     rm -rf $PROJECT_DIR/build
     mkdir -p $PROJECT_DIR/build
     cd $PROJECT_DIR/build
@@ -12,9 +11,8 @@ function rebuild()
     cd $PROJECT_DIR
 }
 
-function run()
-{
-    echo ""    
+function run() {
+    echo ""
     echo "************  Running gstart ************"
     echo ""
 
@@ -27,19 +25,16 @@ function run()
     echo ""
 }
 
-function rebuildDebug()
-{
+function rebuildDebug() {
     rebuild -DCMAKE_BUILD_TYPE=Debug
 }
 
-function rerun()
-{
+function rerun() {
     rebuild
     run
 }
 
-function info()
-{
+function info() {
     echo ""
     echo "************ gstart setup.bash functions ************"
     echo ""
