@@ -15,9 +15,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Install dependencies
+      run: ./scripts/essentials.sh install_dependencies
+
+    - name: Download SFML
+      run: ./scripts/essentials.sh download_sfml
+
     - name: Build
-      run: source setup.bash && build_CI
+      run: source setup.bash && rebuild
 
     - name: Test
       run: run_unit_tests
-      

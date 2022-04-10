@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_DIR="$(pwd)"
+PROJECT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
 function rebuild() {
     rm -rf $PROJECT_DIR/build
@@ -9,12 +9,6 @@ function rebuild() {
     cmake .. "$@"
     make -j12
     cd $PROJECT_DIR
-}
-
-function build_CI() {
-    cd $PROJECT_DIR/scripts
-    ./install_essentials.sh
-    rebuild
 }
 
 function run() {
