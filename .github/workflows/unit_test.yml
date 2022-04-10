@@ -3,7 +3,6 @@ name: unit_test
 on:
   push:
     branches: [ master ]
-  workflow_dispatch:
 
 env:
   BUILD_TYPE: Release
