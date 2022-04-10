@@ -31,6 +31,23 @@ function install_dependencies() {
         cppcheck
 }
 
+function clean_dependencies() {
+    sudo apt-get purge -y libcsfml-audio2.5 \
+        libcsfml-dev \
+        libcsfml-doc \
+        libcsfml-graphics2.5 \
+        libcsfml-network2.5 \
+        libcsfml-system2.5 \
+        libcsfml-window2.5 \
+        libsfml-audio2.5 \
+        libsfml-dev \
+        libsfml-doc \
+        libsfml-graphics2.5 \
+        libsfml-network2.5 \
+        libsfml-system2.5 \
+        libsfml-window2.5
+}
+
 function download_sfml() {
     cd "${SCRIPT_DIR}/../libs"
     if [ ! -d "./SFML-2.5.1" ]; then
