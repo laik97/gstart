@@ -1,0 +1,28 @@
+name: unit_test
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: ./scripts/essentials.sh install_dependencies
+
+    - name: Download SFML
+      run: ./scripts/essentials.sh download_sfml
+
+    - name: Build
+      run: source setup.bash && rebuild
+
+    - name: Test
+      run: run_unit_tests

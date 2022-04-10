@@ -19,8 +19,9 @@ target_include_directories(shapes
 target_link_libraries(gstart 
     PUBLIC
     config
-    SFML::Graphics
-    SFML::Window
+    sfml-graphics
+    sfml-window
+    sfml-system
     )
 
 buildTests()

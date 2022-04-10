@@ -17,10 +17,11 @@ target_include_directories(gstart
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-target_link_libraries(gstart 
+target_link_libraries(gstart
     PUBLIC
     config
     shapes
-    SFML::Graphics
-    SFML::Window
+    sfml-graphics
+    sfml-window
+    sfml-system
     )
