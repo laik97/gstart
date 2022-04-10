@@ -27,7 +27,8 @@ function install_dependencies() {
         lua5.2 \
         liblua5.2-dev \
         liblua5.2-0 \
-        doxygen
+        doxygen \
+        cppcheck
 }
 
 function download_sfml() {
