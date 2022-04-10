@@ -79,16 +79,17 @@ class WorkerShape
 {
   public:
   WorkerShape(const sf::Vector2f& startPosition, const double startOrientation);
+  WorkerShape(){};
 
   void draw(sf::RenderWindow& window);
   void move(const Directions& dir);
 
-  const sf::Vector2f& getCurrentPosition()
+  const sf::Vector2f& getCurrentPosition() const
   {
     return shape_.getPosition();
   }
 
-  float getCurrentOrientation()
+  float getCurrentOrientation() const
   {
     return shape_.getRotation();
   }

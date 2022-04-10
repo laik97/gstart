@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#pragma once
 
 #define PI 3.14159265359
 
@@ -20,18 +20,30 @@ class Transformation
   template<Unit from, Unit to, typename type>
   static void transform(type*);
 
-  template<Origin from, Origin to, typename type>
-  static type transform(type*, float*);
+  template<Unit from, Unit to, typename type>
+  static type transform(type&&);
 };
 
 template<>
-void Transformation::transform<Unit::radians, Unit::degrees>(float* angle)
+inline void Transformation::transform<Unit::radians, Unit::degrees>(float* angle)
 {
   *angle = (*angle / PI) * 180;
 }
 
 template<>
-void Transformation::transform<Unit::degrees, Unit::radians>(float* angle)
+inline float Transformation::transform<Unit::radians, Unit::degrees>(float&& angle)
+{
+  return (angle / PI) * 180;
+}
+
+template<>
+inline void Transformation::transform<Unit::degrees, Unit::radians>(float* angle)
 {
   *angle = (*angle / 180.0) * PI;
+}
+
+template<>
+inline float Transformation::transform<Unit::degrees, Unit::radians>(float&& angle)
+{
+  return (angle / 180.0) * PI;
 }

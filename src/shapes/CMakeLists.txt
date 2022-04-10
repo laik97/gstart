@@ -23,4 +23,4 @@ target_link_libraries(gstart
     SFML::Window
     )
 
-buildTests()    
+buildTests()
