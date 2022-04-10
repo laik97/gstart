@@ -11,6 +11,12 @@ function rebuild() {
     cd $PROJECT_DIR
 }
 
+function build_CI() {
+    cd $PROJECT_DIR/scripts
+    ./install_essentials.sh
+    rebuild
+}
+
 function run() {
     echo ""
     echo "************  Running gstart ************"

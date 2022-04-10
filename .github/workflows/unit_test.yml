@@ -15,11 +15,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Install essentials
-      run: ./scripts/install_essentials.sh
-
     - name: Build
-      run: source setup.bash && rebuild
+      run: source setup.bash && build_CI
 
     - name: Test
       run: run_unit_tests
