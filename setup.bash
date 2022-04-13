@@ -4,6 +4,7 @@ PS1="\e[1;36m(gtest) \e[0m \e[1;34m\u@\h\e[0m:\e[1;32m\w\e[0m$ "
 
 PROJECT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 TEST_RESULTS_PATH=$PROJECT_DIR/Testing
+export LD_LIBRARY_PATH="${PROJECT_DIR}/libs/SFML-2.5.1/lib:${LD_LIBRARY_PATH}"
 
 function build() {
     cd $PROJECT_DIR/build
@@ -23,7 +24,7 @@ function run_unit_tests() {
     rm -rf $TEST_RESULTS_PATH
     mkdir -p $TEST_RESULTS_PATH
     cd $PROJECT_DIR/build
-    ctest --verbose # --output-junit "./unit_test_out.json"
+    ctest --verbose -R Test
     cd $PROJECT_DIR
     echo ""
 }
