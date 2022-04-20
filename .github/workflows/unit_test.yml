@@ -18,9 +18,8 @@ jobs:
     - name: Install dependencies
       run: ./scripts/essentials.sh install_dependencies
 
-    - name: Download essentials
-      run: ./scripts/essentials.sh download_sfml && \
-           ./scripts/essentials.sh download_gtest
+    - name: Download externals
+      run: ./scripts/essentials.sh download_externals
 
     - name: Build
       run: source setup.bash && rebuild

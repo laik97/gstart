@@ -74,4 +74,9 @@ function download_gtest() {
     cd "${SCRIPT_DIR}/../"
 }
 
+function download_externals() {
+    download_sfml
+    download_gtest
+}
+
 $@
