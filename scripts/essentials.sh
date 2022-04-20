@@ -49,6 +49,7 @@ function clean_dependencies() {
 }
 
 function download_sfml() {
+    mkdir -p "${SCRIPT_DIR}/../libs"
     cd "${SCRIPT_DIR}/../libs"
     if [ ! -d "./SFML-2.5.1" ]; then
         mkdir -p sfml
@@ -62,6 +63,7 @@ function download_sfml() {
 }
 
 function download_gtest() {
+    mkdir -p "${SCRIPT_DIR}/../libs"
     cd "${SCRIPT_DIR}/../libs"
     if [ ! -d "./gtest" ]; then
         mkdir -p gtest
