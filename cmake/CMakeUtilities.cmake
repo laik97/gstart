@@ -19,6 +19,11 @@ find_package(SFML PATHS "${CMAKE_SOURCE_DIR}/libs" COMPONENTS graphics window sy
 message(STATUS "SFML version: ${SFML_VERSION}")
 endfunction(findSFML)
 
+function(findGtest)
+message(STATUS "Find GTest")
+add_subdirectory(${CMAKE_SOURCE_DIR}/libs/gtest)
+endfunction(findGtest)
+
 function(findBoost)
 message(STATUS "Find Boost")
 find_package(Boost)
@@ -45,17 +50,11 @@ foreach(test_file ${TEST_FILES})
 endforeach()
 endfunction(buildTests)
 
-function(addLibs)
-add_subdirectory(libs/gtest)
-endfunction(addLibs)
-
 function(runCppCheck)
 find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
 if (CMAKE_CXX_CPPCHECK)
-list(
-    APPEND CMAKE_CXX_CPPCHECK 
-        "./src/"
-        "--verbose"
-)
+set(CMAKE_CXX_CPPCHECK "${CMAKE_CXX_CPPCHECK} src")
+# -ilibs/gtest -ilibs/sfml 
+message("CMAKE_CXX_CPPCHECK: ${CMAKE_CXX_CPPCHECK}")
 endif()
 endfunction(runCppCheck)

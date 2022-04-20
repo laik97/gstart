@@ -10,13 +10,12 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CMakeUtilities.cmake)
 
 message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
-addLibs()
-
-runCppCheck()
-
 printConfiguration()
 
 findSFML()
+findGtest()
+
+runCppCheck()
 
 enable_testing()
 

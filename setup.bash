@@ -5,6 +5,8 @@ PS1="\e[1;36m(gtest) \e[0m \e[1;34m\u@\h\e[0m:\e[1;32m\w\e[0m$ "
 PROJECT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 TEST_RESULTS_PATH=$PROJECT_DIR/Testing
 export LD_LIBRARY_PATH="${PROJECT_DIR}/libs/sfml/lib:${LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="${PROJECT_DIR}/libs/gtest/lib:${LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="${PROJECT_DIR}/libs/gtest/build/lib:${LD_LIBRARY_PATH}"
 
 function build() {
     cd $PROJECT_DIR/build
@@ -50,6 +52,10 @@ function rebuildDebug() {
 function rerun() {
     rebuild
     run
+}
+
+function run_cppcheck() {
+    cppcheck --verbose "${PROJECT_DIR}/src"
 }
 
 function info() {
