@@ -20,6 +20,7 @@ jobs:
 
     - name: Download SFML
       run: ./scripts/essentials.sh download_sfml
+      run: ./scripts/essentials.sh download_gtest
 
     - name: Build
       run: source setup.bash && rebuild
