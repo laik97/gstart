@@ -6,9 +6,7 @@ function install_dependencies() {
     sudo apt-get update && sudo apt-get install -y \
         build-essential \
         wget \
-        git \
         gcc \
-        clang \
         g++ \
         libegl1-mesa \
         libxrandr-dev \
@@ -27,12 +25,11 @@ function install_dependencies() {
         lua5.2 \
         liblua5.2-dev \
         liblua5.2-0 \
-        doxygen \
         cppcheck
 }
 
 function clean_dependencies() {
-    sudo apt-get purge -y libcsfml-audio2.5 \
+    sudo apt-get purge -y \
         libcsfml-dev \
         libcsfml-doc \
         libcsfml-graphics2.5 \

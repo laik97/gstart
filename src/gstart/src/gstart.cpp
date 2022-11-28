@@ -1,73 +1,64 @@
 #include <SFML/Window.hpp>
 #include <vector>
 
-#include "config/globalConfig.h"
-#include "gstart/ConsoleLog.h"
 #include "gstart/gstart.h"
 #include "shapes/workerShape.h"
 
-Gstart* Gstart::getInstance(const Resolution<uint>& resolution)
-{
-  static Gstart instance{ resolution };
-  return &instance;
-}
-
-void Gstart::run()
-{
+void Gstart::run(std::vector<Worker> workers,
+                 std::vector<sf::RectangleShape> worldItems) {
+  worldItems_ = std::move(worldItems);
+  runningWorkers_ = std::move(workers);
   mainLoop();
 }
 
-void Gstart::mainLoop()
-{
-  const auto window = globalConfig_.window_;
-  const auto resolution = window.resolution();
-  runningWorkers_.push_back(
-      { WorkerShape{ resolution.getMiddle<sf::Vector2f, float>(), 0.0 },
-        Directions() });
+void Gstart::mainLoop() {
+  window_.create(sf::VideoMode(resolution_.width, resolution_.height), "GSTART");
+  window_.setFramerateLimit(160);
 
   while (window_.isOpen())
   {
     eventLoop();
 
     for (auto& worker : runningWorkers_)
-    {
-      worker.move();
-      worker.draw(window_);
-    }
+    { worker.draw(window_); }
+
+    for (auto& worldItem : worldItems_)
+    { window_.draw(worldItem); }
 
     window_.display();
     window_.clear();
-    window_.setFramerateLimit(120);
   }
+
+  window_.close();
 }
 
-inline void Gstart::eventLoop()
-{
-  sf::Event event;
-  Directions directions;
+void Gstart::eventLoop() {
+  Direction faceDirection = Direction::stop;
+  Direction sideDirection = Direction::stop;
 
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+  { faceDirection = Direction::forward; }
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+  { faceDirection = Direction::backward; }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+  { sideDirection = Direction::left; }
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+  { sideDirection = Direction::right; }
+
+  for (auto& worker : runningWorkers_)
+  {
+    worker.move(faceDirection);
+    worker.move(sideDirection);
+  }
+
+  sf::Event event;
   while (window_.pollEvent(event))
   {
-    for (auto& worker : runningWorkers_)
-    {
-      if (event.type == sf::Event::KeyPressed)
-      {
-        worker.setDirections(event.key.code);
-      }
-
-      if (event.type == sf::Event::KeyReleased)
-      {
-        worker.resetDirections(event.key.code);
-      }
-    }
-
-    if (event.type == sf::Event::KeyPressed)
-    {
-      if (event.key.code == sf::Keyboard::Escape)
-        window_.close();
-    }
-
     if (event.type == sf::Event::Closed)
       window_.close();
   }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    window_.close();
 }

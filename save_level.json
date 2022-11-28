@@ -1,0 +1,36 @@
+{
+	"block_declaration" : 
+	{
+		"origin" : 
+		{
+			"x" : 0,
+			"y" : 0
+		},
+		"size" : 50,
+		"type" : "square_block"
+	},
+	"blocks" : 
+	[
+		{
+			"x" : 151,
+			"y" : 102
+		},
+		{
+			"x" : 591,
+			"y" : 130
+		},
+		{
+			"x" : 159,
+			"y" : 478
+		},
+		{
+			"x" : 622,
+			"y" : 492
+		}
+	],
+	"window_config" : 
+	{
+		"height" : 600,
+		"width" : 800
+	}
+}

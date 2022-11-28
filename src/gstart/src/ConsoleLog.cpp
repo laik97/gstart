@@ -1,1 +1,0 @@
-#include "gstart/ConsoleLog.h"

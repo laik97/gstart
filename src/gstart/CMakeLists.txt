@@ -19,9 +19,24 @@ target_include_directories(gstart
 
 target_link_libraries(gstart
     PUBLIC
-    config
     shapes
     sfml-graphics
     sfml-window
     sfml-system
+    LevelCreator
     )
+
+
+############################
+### Gstart python module ###
+############################
+add_library(GstartPy MODULE ${CMAKE_CURRENT_SOURCE_DIR}/GstartPy.cpp)
+target_compile_options(GstartPy PRIVATE -O3)
+target_link_libraries(GstartPy 
+    PUBLIC 
+    pybind11::module 
+    pybind11::lto 
+    pybind11::windows_extras 
+    gstart
+    )
+pybind11_extension(GstartPy)

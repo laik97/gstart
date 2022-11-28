@@ -1,9 +1,15 @@
+#pragma once
+#include <memory>
 #include <vector>
 
+#include "LevelCreator/LevelCreator.h"
 #include "SFML/Graphics.hpp"
-#include "config/globalConfig.h"
-#include "config/windowConfig.h"
 #include "shapes/workerShape.h"
+
+struct GstartArguments
+{
+  std::string levelLoadPath{};
+};
 
 class Gstart
 {
@@ -11,26 +17,43 @@ class Gstart
   Gstart() = delete;
   Gstart(const Gstart&) = delete;
   Gstart(const Gstart&&) = delete;
+  ~Gstart() = default;
   Gstart& operator=(const Gstart&) = delete;
 
-  static Gstart* getInstance(const Resolution<uint>& resolution);
+  friend std::unique_ptr<Gstart> std::make_unique<Gstart>(const Resolution&);
 
-  void run();
+  protected:
+  explicit Gstart(const Resolution resolution) : resolution_{ resolution } {};
+
+  public:
+  static std::unique_ptr<Gstart> makeGstart(const Resolution& resolution) {
+    return std::make_unique<Gstart>(resolution);
+  }
+
+  static std::unique_ptr<Gstart> makeGstart(const GstartArguments& args) {
+    LevelCreator::WindowConfig windowConfig;
+
+    if (!args.levelLoadPath.empty())
+    { windowConfig = LevelCreator::LevelLoader::load(args.levelLoadPath); }
+
+    auto game = makeGstart(
+        Resolution{ windowConfig.resolution.width, windowConfig.resolution.height });
+
+    game->worldItems_ = { windowConfig.level.getBuildingBlocks().begin(),
+                          windowConfig.level.getBuildingBlocks().end() };
+
+    return game;
+  }
+
+  void run(std::vector<Worker> workers, std::vector<sf::RectangleShape> worldItems);
 
   private:
-  ~Gstart(){};
-  Gstart(const Resolution<uint> resolution)
-      : globalConfig_(resolution),
-        window_(sf::VideoMode(resolution.width_, resolution.height_), "GSTART")
-  {
-    window_.setKeyRepeatEnabled(false);
-  };
-
   void mainLoop();
   void eventLoop();
 
   private:
-  std::vector<Worker> runningWorkers_;
-  GlobalConfig globalConfig_{};
+  Resolution resolution_;
   sf::RenderWindow window_{};
+  std::vector<Worker> runningWorkers_;
+  std::vector<sf::RectangleShape> worldItems_;
 };

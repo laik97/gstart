@@ -1,147 +1,121 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
+#include "workerTail.h"
 
-struct Directions
+class Worker;
+
+enum class Direction
 {
-  bool forward_ = false;
-  bool backward_ = false;
-  bool left_ = false;
-  bool right_ = false;
-
-  void left(bool arg = true)
-  {
-    left_ = arg;
-  }
-  void right(bool arg = true)
-  {
-    right_ = arg;
-  }
-  void forward(bool arg = true)
-  {
-    forward_ = arg;
-  }
-  void backward(bool arg = true)
-  {
-    backward_ = arg;
-  }
-
-  void clear()
-  {
-    forward_ = false;
-    backward_ = false;
-    left_ = false;
-    right_ = false;
-  }
+  forward,
+  backward,
+  left,
+  right,
+  stop
 };
 
 struct WorkerBaseShape
 {
+  WorkerBaseShape() = default;
+  WorkerBaseShape(const float width, const float length)
+      : width_{ width }, length_{ length } { }
+
+  WorkerBaseShape(const float scale)
+      : width_{ 5.0f * scale }, length_{ 8.0f * scale } { }
+
+  ~WorkerBaseShape() = default;
+
   /*
-  // backUp
-  // | \
-  // |   \
-  // |     \
-  // |       \
-  // |       / front
-  // |     /
-  // |   /
-  // | /
-  // backDown
+  origin length
+        |
+        |
+        |
+      backUp
+        | \
+        |   \
+        |     \
+        |       \
+        |       / front ----- origin width
+        |     /
+        |   /
+        | /
+      backDown
   */
 
-  static constexpr std::array<float, 2> frontBasePoint{ 8.0, 2.5 };
-  static constexpr std::array<float, 2> backUpBasePoint{ 0.0, 0.0 };
-  static constexpr std::array<float, 2> backDownBasePoint{ 0.0, 5.0 };
-
-  static sf::Vector2f getFrontBasePoint()
-  {
-    return { 8.0, 2.5 };
+  sf::Vector2f getFrontBasePoint() {
+    return { length_, 0.0 };
   };
 
-  static sf::Vector2f getBackUpBasePoint()
-  {
-    return { 0.0, 0.0 };
+  sf::Vector2f getBackUpBasePoint() {
+    return { 0.0f, -width_ / 2.0f };
   };
 
-  static sf::Vector2f getBackDownBasePoint()
-  {
-    return { 0.0, 5.0 };
+  sf::Vector2f getBackDownBasePoint() {
+    return { 0.0f, width_ / 2.0f };
   };
 
-  static sf::Vector2f getOrigin()
-  {
-    return { 4.0, 2.5 };
+  sf::Vector2f getOrigin() {
+    return { 0.0f, 0.0f };
   }
+
+  private:
+  float width_{ 5.0f };
+  float length_{ 8.0f };
 };
 
 class WorkerShape
 {
+  friend class Worker;
+
   public:
+  WorkerShape() = default;
   WorkerShape(const sf::Vector2f& startPosition, const double startOrientation);
-  WorkerShape(){};
 
+  protected:
   void draw(sf::RenderWindow& window);
-  void move(const Directions& dir);
+  void move(const Direction dir);
 
-  const sf::Vector2f& getCurrentPosition() const
-  {
+  const sf::Vector2f& getCurrentPosition() const {
     return shape_.getPosition();
   }
 
-  float getCurrentOrientation() const
-  {
+  float getCurrentOrientation() const {
     return shape_.getRotation();
   }
 
   private:
-  sf::ConvexShape shape_{};
+  sf::Vector2f getShapePointGlobalPosition(const size_t pointIndex);
+  sf::Vector2f transformPointFromLocalToGlobal(sf::Vector2f&& point);
+
+  sf::ConvexShape shape_;
   sf::Vector2f speedVector_{ 1.0, 0.0 };
-  const sf::Color color_{ 255, 191, 41 };
+  sf::Color color_{ 255, 191, 41 };
+  WorkerTail tail;
+
   void setInitialPosition(const sf::Vector2f& position, const double orientation);
   void createShape();
-  void moveLeft(const Directions& dir);
-  void moveRight(const Directions& dir);
-  void moveForeward(const Directions& dir);
-  void moveBackward(const Directions& dir);
+
+  // shape movement
+  void moveLeft();
+  void moveRight();
+  void moveForward();
+  void moveBackward();
+  void stop();
 };
 
 struct Worker
 {
-  WorkerShape worker;
-  Directions directions;
+  Worker() = default;
+  Worker(const WorkerShape& worker) : worker_{ worker } { }
+  ~Worker() = default;
 
-  void draw(sf::RenderWindow& window)
-  {
-    worker.draw(window);
+  WorkerShape worker_;
+
+  void draw(sf::RenderWindow& window) {
+    worker_.draw(window);
   }
 
-  void move()
-  {
-    worker.move(directions);
-  }
-
-  void setDirections(sf::Keyboard::Key code)
-  {
-    switch (code)
-    {
-      case sf::Keyboard::Left: directions.left(); break;
-      case sf::Keyboard::Right: directions.right(); break;
-      case sf::Keyboard::Up: directions.forward(); break;
-      case sf::Keyboard::Down: directions.backward(); break;
-      default: break;
-    }
-  }
-
-  void resetDirections(sf::Keyboard::Key code)
-  {
-    switch (code)
-    {
-      case sf::Keyboard::Left: directions.left(false); break;
-      case sf::Keyboard::Right: directions.right(false); break;
-      case sf::Keyboard::Up: directions.forward(false); break;
-      case sf::Keyboard::Down: directions.backward(false); break;
-      default: break;
-    }
+  void move(const Direction dir) {
+    worker_.move(dir);
   }
 };

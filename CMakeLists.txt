@@ -8,14 +8,11 @@ project(gstart VERSION 1.0)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CMakeUtilities.cmake)
 
-message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+setCompileOptions()
 
 printConfiguration()
 
-findSFML()
-findGtest()
-
-runCppCheck()
+integrateLibs()
 
 enable_testing()
 

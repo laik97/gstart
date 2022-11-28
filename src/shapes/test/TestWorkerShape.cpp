@@ -4,8 +4,7 @@
 #include "shapes/transformations.h"
 #include "shapes/workerShape.h"
 
-namespace
-{
+namespace {
   class TestWorkerShape : public ::testing::Test
   {
     protected:
@@ -16,67 +15,42 @@ namespace
 
 }  // namespace
 
-TEST_F(TestWorkerShape, WorkerConstruction)
-{
+TEST_F(TestWorkerShape, WorkerConstruction) {
   EXPECT_EQ(workerShape.getCurrentPosition().x, 0.0);
   EXPECT_EQ(workerShape.getCurrentPosition().y, 0.0);
   EXPECT_EQ(workerShape.getCurrentOrientation(), 0.0);
 }
 
-TEST_F(TestWorkerShape, WorkerMoveForward)
-{
-  Directions dir;
-  dir.forward();
-  workerShape.move(dir);
+TEST_F(TestWorkerShape, WorkerMoveForward) {
+  workerShape.move(Direction::forward);
   EXPECT_EQ(workerShape.getCurrentPosition().x, 1.0);
   EXPECT_EQ(workerShape.getCurrentPosition().y, 0.0);
   EXPECT_EQ(workerShape.getCurrentOrientation(), 0.0);
 }
 
-TEST_F(TestWorkerShape, WorkerRotateLeft90deg)
-{
-  Directions dir;
-  dir.left();
-
+TEST_F(TestWorkerShape, WorkerRotateLeft90deg) {
   for (int i = 0; i < 45; i++)
-  {
-    workerShape.move(dir);
-  }
+  { workerShape.move(Direction::left); }
 
   EXPECT_EQ(workerShape.getCurrentPosition().x, 0.0);
   EXPECT_EQ(workerShape.getCurrentPosition().y, 0.0);
   EXPECT_EQ(workerShape.getCurrentOrientation(), 270.0);
 }
 
-TEST_F(TestWorkerShape, WorkerRotateRight90deg)
-{
-  Directions dir;
-  dir.right();
-
+TEST_F(TestWorkerShape, WorkerRotateRight90deg) {
   for (int i = 0; i < 45; i++)
-  {
-    workerShape.move(dir);
-  }
+  { workerShape.move(Direction::right); }
 
   EXPECT_EQ(workerShape.getCurrentPosition().x, 0.0);
   EXPECT_EQ(workerShape.getCurrentPosition().y, 0.0);
   EXPECT_EQ(workerShape.getCurrentOrientation(), 90.0);
 }
 
-TEST_F(TestWorkerShape, WorkerComplexMovement)
-{
-  Directions dir;
-  dir.right();
-
+TEST_F(TestWorkerShape, WorkerComplexMovement) {
   for (int i = 0; i < 15; i++)
-  {
-    workerShape.move(dir);
-  }
+  { workerShape.move(Direction::right); }
 
-  dir.clear();
-  dir.forward();
-
-  workerShape.move(dir);
+  workerShape.move(Direction::forward);
   float angle = Transformation::transform<Unit::degrees, Unit::radians>(30.0f);
 
   const float sin30 = std::sin(angle);

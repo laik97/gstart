@@ -1,33 +1,45 @@
 BasedOnStyle: Google
 Language: Cpp
-Standard: 'Latest'
+Standard: "Latest"
 IndentWidth: 2
 
 ColumnLimit: 85
 
-AlignAfterOpenBracket: 'true'
-AlignConsecutiveMacros: 'true'
-AlignOperands: 'true'
+AlignAfterOpenBracket: true
+AlignConsecutiveMacros: true
+AlignOperands: true
 AccessModifierOffset: 0
 
-AllowAllParametersOfDeclarationOnNextLine: 'false'
-AllowAllConstructorInitializersOnNextLine: 'true'
-AllowShortIfStatementsOnASingleLine: 'Never'
-AllowShortCaseLabelsOnASingleLine: 'true'
-AllowShortFunctionsOnASingleLine: 'None'
-AllowShortLoopsOnASingleLine: 'false'
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllConstructorInitializersOnNextLine: true
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
 
-BreakBeforeBraces: Allman
-BinPackArguments: 'false'
-BinPackParameters: 'false'
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterEnum: true
+  AfterStruct: true
+  AfterFunction: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+  BeforeElse: true
+  AfterControlStatement: Always
 
-Cpp11BracedListStyle: 'false'
+BinPackArguments: "false"
+BinPackParameters: "false"
 
-SpaceInEmptyBlock: 'true'
-SpaceAfterTemplateKeyword: 'false'
-SpaceBeforeInheritanceColon: 'true'
-SpaceBeforeParens: 'ControlStatements'
-SpaceBeforeCtorInitializerColon: 'true'
-SpaceBeforeRangeBasedForLoopColon: 'true'
+Cpp11BracedListStyle: "false"
 
-NamespaceIndentation: 'All'
+SpaceInEmptyBlock: "true"
+SpaceAfterTemplateKeyword: "false"
+SpaceBeforeInheritanceColon: "true"
+SpaceBeforeParens: "ControlStatements"
+SpaceBeforeCtorInitializerColon: "true"
+SpaceBeforeRangeBasedForLoopColon: "true"
+
+NamespaceIndentation: "All"
